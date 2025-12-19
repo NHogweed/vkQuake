@@ -660,6 +660,13 @@ void Draw_SubPic (cb_context_t *cbx, float x, float y, float w, float h, qpic_t 
 	if (!gl.gltexture)
 		return;
 
+	vec4_t rgba = {255.0f, 255.0f, 255.0f, alpha * 255.0f};
+	if (rgb)
+	{
+		for (i = 0; i < 3; ++i)
+			rgba[i] *= rgb[i];
+	}
+
 	VkBuffer	   buffer;
 	VkDeviceSize   buffer_offset;
 	basicvertex_t *vertices = (basicvertex_t *)R_VertexAllocate (6 * sizeof (basicvertex_t), &buffer, &buffer_offset);
@@ -693,10 +700,10 @@ void Draw_SubPic (cb_context_t *cbx, float x, float y, float w, float h, qpic_t 
 
 	for (i = 0; i < 4; ++i)
 	{
-		corner_verts[i].color[0] = rgb[0] * 255.0f;
-		corner_verts[i].color[1] = rgb[1] * 255.0f;
-		corner_verts[i].color[2] = rgb[2] * 255.0f;
-		corner_verts[i].color[3] = alpha * 255.0f;
+		corner_verts[i].color[0] = rgba[0];
+		corner_verts[i].color[1] = rgba[1];
+		corner_verts[i].color[2] = rgba[2];
+		corner_verts[i].color[3] = rgba[3];
 	}
 
 	vertices[0] = corner_verts[0];
